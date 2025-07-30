@@ -215,19 +215,12 @@ python manage.py runserver
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
+## Authors
 
-For support and questions:
-- Create an issue in the repository
-- Contact the development team
-- Check the documentation
-
-## Version History
-
-- **v1.0.0**: Initial release with core features
-- **v1.1.0**: Added user activity tracking
-- **v1.2.0**: Enhanced admin interface
-- **v1.3.0**: Improved search functionality
+- Darshini Balamurali
+- Eshwara Pandiyan
+- Joel Thomas Joe
+- Yuvashree Senthilmurugan
 
 ---
 
