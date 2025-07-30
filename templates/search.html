@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1>Search Results</h1>
+            
+            <!-- Search Form -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="GET" action="{% url 'search' %}">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="text" name="query" class="form-control" placeholder="Search articles and events..." value="{{ query|default:'' }}">
+                            </div>
+                            <div class="col-md-2">
+                                <select name="search_type" class="form-select">
+                                    <option value="all" {% if form.search_type.value == 'all' %}selected{% endif %}>All</option>
+                                    <option value="articles" {% if form.search_type.value == 'articles' %}selected{% endif %}>Articles</option>
+                                    <option value="events" {% if form.search_type.value == 'events' %}selected{% endif %}>Events</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            {% if query %}
+                <p class="text-muted">Results for: "{{ query }}"</p>
+            {% endif %}
+            
+            {% if results %}
+                <div class="row">
+                    {% for result in results %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100">
+                                {% if result.type == 'article' %}
+                                    {% if result.object.featured_image %}
+                                        <img src="{{ result.object.featured_image.url }}" class="card-img-top" alt="{{ result.object.title }}" style="height: 200px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="card-img-top bg-primary d-flex align-items-center justify-content-center" style="height: 200px;">
+                                            <i class="fas fa-newspaper text-white fa-3x"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="mb-2">
+                                            <span class="badge bg-success">Article</span>
+                                        </div>
+                                        <h5 class="card-title">{{ result.object.title }}</h5>
+                                        <p class="card-text">{{ result.object.excerpt|truncatewords:20 }}</p>
+                                        <div class="mb-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-user"></i> {{ result.object.author.first_name }} {{ result.object.author.last_name }}
+                                            </small>
+                                        </div>
+                                        <div class="mb-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar"></i> {{ result.object.created_at|date:"M d, Y" }}
+                                            </small>
+                                        </div>
+                                        <div class="mb-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-eye"></i> {{ result.object.views }} views
+                                            </small>
+                                        </div>
+                                        <div class="mt-auto">
+                                            <a href="{% url 'article_detail' result.object.slug %}" class="btn btn-outline-light btn-sm">Read More</a>
+                                        </div>
+                                    </div>
+                                {% elif result.type == 'event' %}
+                                    {% if result.object.event_image %}
+                                        <img src="{{ result.object.event_image.url }}" class="card-img-top" alt="{{ result.object.title }}" style="height: 200px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="card-img-top bg-success d-flex align-items-center justify-content-center" style="height: 200px;">
+                                            <i class="fas fa-calendar text-white fa-3x"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="mb-2">
+                                            <span class="badge bg-info">Event</span>
+                                        </div>
+                                        <h5 class="card-title">{{ result.object.title }}</h5>
+                                        <p class="card-text">{{ result.object.description|truncatewords:20 }}</p>
+                                        <div class="mb-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar"></i> {{ result.object.start_date|date:"M d, Y" }}
+                                            </small>
+                                        </div>
+                                        <div class="mb-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-map-marker-alt"></i> {{ result.object.location }}
+                                            </small>
+                                        </div>
+                                        <div class="mt-auto">
+                                            <a href="{% url 'event_detail' result.object.slug %}" class="btn btn-outline-light btn-sm">View Details</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if results.has_other_pages %}
+                    <nav aria-label="Search results pagination">
+                        <ul class="pagination justify-content-center">
+                            {% if results.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?query={{ query }}&page={{ results.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in results.paginator.page_range %}
+                                {% if results.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > results.number|add:'-3' and num < results.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?query={{ query }}&page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if results.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?query={{ query }}&page={{ results.next_page_number }}">Next</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-search fa-4x text-muted"></i>
+                    </div>
+                    <h3 class="text-muted">No results found</h3>
+                    {% if query %}
+                        <p class="text-muted">No articles or events found for "{{ query }}"</p>
+                    {% else %}
+                        <p class="text-muted">Please enter a search term to find articles and events.</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

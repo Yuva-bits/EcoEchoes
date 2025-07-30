@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - EcoEchoes{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto text-center">
+                <h1 class="display-3 fw-bold mb-3">Welcome to EcoEchoes</h1>
+                <h2 class="display-6 text-primary mb-4 fw-light">Smaller Voices. Greater Ripples.</h2>
+                <p class="lead mb-4">
+                    Join EcoEchoes, an environmental awareness club where passion meets purpose. 
+                    We're a community of changemakers committed to building a cleaner, greener planet—one step at a time.
+                </p>
+                <p class="lead mb-5">
+                    Be part of the solution. Learn, act, and inspire to create a sustainable future for generations to come.
+                </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    {% if user.is_authenticated and user.userprofile.is_club_member %}
+                        <a href="{% url 'event_list' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calendar"></i> View Events
+                        </a>
+                        <a href="{% url 'article_list' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-newspaper"></i> Read Articles
+                        </a>
+                    {% else %}
+                        <a href="{% url 'article_list' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-newspaper"></i> Read Articles
+                        </a>
+                        <a href="{% url 'event_list' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-calendar"></i> View Events
+                        </a>
+                        <a href="{% url 'apply_membership' %}" class="btn btn-success btn-lg">
+                            <i class="fas fa-user-plus"></i> Join Our Community
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Recent Articles Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-5">
+                    <i class="fas fa-newspaper text-primary"></i> Recent Articles
+                </h2>
+            </div>
+        </div>
+        
+        {% if recent_articles %}
+            <div class="row">
+                {% for article in recent_articles %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            {% if article.featured_image %}
+                                <img src="{{ article.featured_image.url }}" class="card-img-top" alt="{{ article.title }}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <div class="card-img-top bg-primary d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i class="fas fa-leaf text-white fa-3x"></i>
+                                </div>
+                            {% endif %}
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ article.title }}</h5>
+                                <p class="card-text flex-grow-1">{{ article.excerpt|truncatewords:20 }}</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <small class="text-muted">
+                                            <i class="fas fa-user"></i> {{ article.author.first_name }} {{ article.author.last_name }}
+                                        </small>
+                                        <small class="text-muted">
+                                            <i class="fas fa-eye"></i> {{ article.views }}
+                                        </small>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-secondary">{{ article.get_category_display }}</span>
+                                        <a href="{{ article.get_absolute_url }}" class="btn btn-primary btn-sm">
+                                            Read More <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="{% url 'article_list' %}" class="btn btn-outline-primary">
+                    <i class="fas fa-newspaper"></i> View All Articles
+                </a>
+            </div>
+        {% else %}
+            <div class="text-center">
+                <i class="fas fa-newspaper text-muted fa-3x mb-3"></i>
+                <h4>No articles yet</h4>
+                <p class="text-muted">Our club members are working on environmental content for you to read.</p>
+                {% if user.is_authenticated and user.userprofile.is_club_member %}
+                    <a href="{% url 'article_create' %}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create Article
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Upcoming Events Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-5">
+                    <i class="fas fa-calendar-alt text-primary"></i> Upcoming Events
+                </h2>
+            </div>
+        </div>
+        
+        {% if upcoming_events %}
+            <div class="row">
+                {% for event in upcoming_events %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            {% if event.event_image %}
+                                <img src="{{ event.event_image.url }}" class="card-img-top" alt="{{ event.title }}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <div class="card-img-top bg-success d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i class="fas fa-calendar text-white fa-3x"></i>
+                                </div>
+                            {% endif %}
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ event.title }}</h5>
+                                <p class="card-text flex-grow-1">{{ event.description|truncatewords:20 }}</p>
+                                <div class="mt-auto">
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-calendar"></i> {{ event.start_date|date:"M d, Y" }}
+                                        </small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-map-marker-alt"></i> {{ event.location }}
+                                        </small>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-info">{{ event.get_event_type_display }}</span>
+                                        <a href="{{ event.get_absolute_url }}" class="btn btn-success btn-sm">
+                                            View Details <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="{% url 'event_list' %}" class="btn btn-outline-success">
+                    <i class="fas fa-calendar-alt"></i> View All Events
+                </a>
+            </div>
+        {% else %}
+            <div class="text-center">
+                <i class="fas fa-calendar-alt text-muted fa-3x mb-3"></i>
+                <h4>No upcoming events</h4>
+                <p class="text-muted">Our club members are planning exciting environmental activities for you to join!</p>
+                {% if user.is_authenticated and user.userprofile.is_club_member %}
+                    <a href="{% url 'event_create' %}" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Create Event
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-4">Make a Difference Today</h2>
+                <p class="lead mb-4">
+                    Join thousands of environmental enthusiasts who are making a positive impact 
+                    on our planet. Every small action counts towards a sustainable future.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    {% if user.is_authenticated and user.userprofile.is_club_member %}
+                        <a href="{% url 'article_create' %}" class="btn btn-light btn-lg">
+                            <i class="fas fa-plus"></i> Share Your Story
+                        </a>
+                        <a href="{% url 'event_create' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-plus"></i> Create Event
+                        </a>
+                    {% else %}
+                        <a href="{% url 'contact' %}" class="btn btn-light btn-lg">
+                            <i class="fas fa-envelope"></i> Contact Us
+                        </a>
+                        <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-info-circle"></i> Learn More
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-5">What We Do</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-newspaper text-primary fa-3x"></i>
+                    </div>
+                    <h5>Educational Articles</h5>
+                    <p>Stay informed with our latest environmental articles and research insights.</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-users text-primary fa-3x"></i>
+                    </div>
+                    <h5>Community Events</h5>
+                    <p>Join our cleaning campaigns, tree planting, and awareness drives.</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-trophy text-primary fa-3x"></i>
+                    </div>
+                    <h5>Competitions</h5>
+                    <p>Participate in environmental competitions and showcase your green ideas.</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-microphone text-primary fa-3x"></i>
+                    </div>
+                    <h5>Public Speaking</h5>
+                    <p>Attend workshops and seminars on environmental topics and sustainability.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Simple button hover effects only
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enhanced button hover effects
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    });
+</script>
+{% endblock %} 

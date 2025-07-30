@@ -1,0 +1,1193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EcoEchoes - Environmental Awareness Club{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-green: #28a745;
+            --secondary-green: #20c997;
+            --dark-green: #155724;
+            --light-green: #d4edda;
+            --accent-orange: #fd7e14;
+            --earth-brown: #8b4513;
+            
+            /* Dark theme colors */
+            --bg-dark: #1a1a1a;
+            --bg-dark-secondary: #2d2d2d;
+            --bg-dark-tertiary: #3d3d3d;
+            --text-light: #e8e8e8;
+            --text-muted-dark: #b8b8b8;
+            --border-dark: #404040;
+            --card-dark: #2a2a2a;
+            --header-dark: #1f1f1f;
+            
+            /* Enhanced gradients and shadows */
+            --gradient-primary: linear-gradient(135deg, #28a745, #20c997);
+            --gradient-secondary: linear-gradient(135deg, #17a2b8, #6f42c1);
+            --gradient-dark: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.15);
+            --shadow-heavy: 0 8px 30px rgba(0, 0, 0, 0.2);
+            --shadow-glow: 0 0 20px rgba(40, 167, 69, 0.3);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+        
+        .navbar {
+            background: var(--gradient-dark);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-medium);
+            border-bottom: 1px solid var(--border-dark);
+            padding: 0.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-green) !important;
+            display: flex;
+            align-items: center;
+            margin-right: 2rem;
+        }
+        
+        .brand-text {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-nav {
+            align-items: center;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0.75rem !important;
+            border-radius: 6px;
+            margin: 0 0.25rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--secondary-green) !important;
+            background-color: rgba(40, 167, 69, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .navbar-nav .nav-link.btn {
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-nav .nav-link.btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .navbar-brand img {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+            background: transparent;
+        }
+        
+        /* Logo styling for better dark theme integration */
+        .navbar-brand img,
+        .footer-logo img {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)) 
+                    brightness(1.4) 
+                    contrast(1.2)
+                    saturate(1.3);
+            background: transparent;
+            border-radius: 50%;
+            padding: 2px;
+        }
+        
+        .navbar-brand img:hover,
+        .footer-logo img:hover {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)) 
+                    brightness(1.2) 
+                    contrast(1.3);
+            transform: scale(1.05);
+        }
+        
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--secondary-green) !important;
+            transform: translateY(-2px);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.85), rgba(40, 167, 69, 0.8)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-light);
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(40, 167, 69, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(32, 201, 151, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .hero-section .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .btn {
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .btn-primary:hover {
+            background: var(--gradient-primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium), var(--shadow-glow);
+        }
+        
+        .btn-success {
+            background: var(--gradient-primary);
+            border: none;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .btn-success:hover {
+            background: var(--gradient-primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium), var(--shadow-glow);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-green);
+            border-color: var(--primary-green);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-green);
+            border-color: var(--primary-green);
+        }
+        
+        .card {
+            background: var(--gradient-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 20px;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-light);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-heavy), var(--shadow-glow);
+            border-color: var(--primary-green);
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .card-img-top {
+            transition: transform 0.4s ease;
+        }
+        
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--bg-dark-secondary), var(--bg-dark-tertiary));
+            color: var(--primary-green);
+            border-radius: 15px 15px 0 0 !important;
+            border-bottom: 1px solid var(--border-dark);
+        }
+        
+        /* Categories Sidebar Styles */
+        .list-group-item {
+            background-color: var(--bg-dark-secondary);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            border-radius: 0 !important;
+        }
+        
+        .list-group-item:hover {
+            background-color: var(--bg-dark-tertiary);
+            color: var(--secondary-green);
+            transform: translateX(5px);
+        }
+        
+        .list-group-item.active {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-color: var(--primary-green);
+            color: var(--text-light);
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+        
+        .list-group-item i {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+        }
+        
+        .list-group-item .badge {
+            background-color: var(--bg-dark-tertiary);
+            color: var(--text-light);
+            border: 1px solid var(--border-dark);
+        }
+        
+        .list-group-item.active .badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .footer {
+            background-color: var(--header-dark);
+            color: var(--text-light);
+            padding: 50px 0 20px;
+            margin-top: 50px;
+            border-top: 1px solid var(--border-dark);
+        }
+        
+        .footer h5 {
+            color: var(--primary-green);
+            margin-bottom: 20px;
+        }
+        
+        .footer a {
+            color: var(--text-muted-dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: var(--secondary-green);
+        }
+        
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-left: 1rem;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .search-toggle {
+            color: var(--text-light) !important;
+            font-size: 1rem;
+            padding: 0.4rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            background: transparent;
+            border: none;
+            display: block;
+        }
+        
+        .search-toggle:hover {
+            color: var(--primary-green) !important;
+            background-color: rgba(40, 167, 69, 0.1);
+            transform: scale(1.1);
+        }
+        
+        .search-toggle.hidden {
+            display: none;
+        }
+        
+        .search-form {
+            position: relative;
+            min-width: 0;
+            width: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            height: 0;
+        }
+        
+        .search-form.active {
+            min-width: 250px;
+            width: 250px;
+            opacity: 1;
+            visibility: visible;
+            margin-left: 0.5rem;
+            height: auto;
+        }
+        
+        .search-form .input-group {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .search-form .form-control {
+            border: none;
+            padding: 0.4rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .search-form .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        
+        .search-form .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-form .btn {
+            border: none;
+            padding: 0.4rem 1rem;
+            background-color: var(--primary-green);
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .search-form .btn:hover {
+            background-color: var(--dark-green);
+            transform: translateY(-1px);
+        }
+        
+        .search-form .input-group {
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .search-form .form-control {
+            border: none;
+            padding: 0.75rem 1.25rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+        
+        .search-form .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        
+        .search-form .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-form .btn {
+            border: none;
+            padding: 0.75rem 1.25rem;
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        .search-form .btn:hover {
+            background-color: var(--dark-green);
+            transform: translateY(-1px);
+        }
+        
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 0 0 5px 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .search-suggestion {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-dark);
+            color: var(--text-light);
+        }
+        
+        .search-suggestion:hover {
+            background-color: var(--bg-dark-secondary);
+            color: var(--secondary-green);
+        }
+        
+        .badge-eco {
+            background-color: var(--secondary-green);
+            color: var(--text-light);
+        }
+        
+        .alert-success {
+            background-color: var(--bg-dark-secondary);
+            border-color: var(--primary-green);
+            color: var(--secondary-green);
+        }
+        
+        .text-primary {
+            color: var(--primary-green) !important;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary-green) !important;
+        }
+        
+        .text-muted {
+            color: var(--text-muted-dark) !important;
+        }
+        
+        .bg-light {
+            background-color: var(--bg-dark-secondary) !important;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, var(--bg-dark-secondary), var(--bg-dark-tertiary));
+            color: var(--text-light);
+            padding: 60px 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-dark);
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: var(--text-light);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--border-dark);
+        }
+        
+        .stats-card h3 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .member-badge {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: var(--text-light);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        /* Dark theme for Bootstrap components */
+        .dropdown-menu {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-dark);
+        }
+        
+        .dropdown-item {
+            color: var(--text-light);
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--bg-dark-secondary);
+            color: var(--secondary-green);
+        }
+        
+        .form-control {
+            background-color: var(--bg-dark-secondary);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+        }
+        
+        .form-control:focus {
+            background-color: var(--bg-dark-secondary);
+            border-color: var(--primary-green);
+            color: var(--text-light);
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        
+        .form-select {
+            background-color: var(--bg-dark-secondary);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+        }
+        
+        .form-select:focus {
+            background-color: var(--bg-dark-secondary);
+            border-color: var(--primary-green);
+            color: var(--text-light);
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        
+        .form-check-input {
+            background-color: var(--bg-dark-secondary);
+            border: 1px solid var(--border-dark);
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary-green);
+            border-color: var(--primary-green);
+        }
+        
+        .pagination .page-link {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+        }
+        
+        .pagination .page-link:hover {
+            background-color: var(--bg-dark-secondary);
+            color: var(--secondary-green);
+        }
+        
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-green);
+            border-color: var(--primary-green);
+        }
+        
+        /* Enhanced page styling */
+        .page-header {
+            background: var(--gradient-dark);
+            padding: 60px 0;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(40, 167, 69, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .page-header h1 {
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Enhanced form styling */
+        .form-control, .form-select {
+            background: var(--gradient-dark);
+            border: 2px solid var(--border-dark);
+            border-radius: 12px;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            padding: 12px 16px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background: var(--gradient-dark);
+            border-color: var(--primary-green);
+            box-shadow: var(--shadow-glow);
+            color: var(--text-light);
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-muted-dark);
+        }
+        
+        /* Enhanced badge styling */
+        .badge {
+            border-radius: 20px;
+            font-weight: 600;
+            padding: 8px 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Enhanced pagination */
+        .pagination .page-link {
+            background: var(--gradient-dark);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+            border-radius: 8px;
+            margin: 0 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination .page-link:hover {
+            background: var(--gradient-primary);
+            border-color: var(--primary-green);
+            transform: translateY(-2px);
+        }
+        
+        .pagination .page-item.active .page-link {
+            background: var(--gradient-primary);
+            border-color: var(--primary-green);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        /* Enhanced alert styling */
+        .alert {
+            border-radius: 15px;
+            border: none;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .alert-primary {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(32, 201, 151, 0.1));
+            border-left: 4px solid var(--primary-green);
+        }
+        
+        /* Enhanced section styling */
+        .bg-light {
+            background: var(--gradient-dark) !important;
+            border-top: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-dark);
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Loading animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Enhanced text styling */
+        .display-3, .display-4, .display-5, .display-6 {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .lead {
+            font-size: 1.25rem;
+            font-weight: 400;
+            line-height: 1.8;
+        }
+        
+        /* Enhanced image styling */
+        .img-fluid {
+            border-radius: 12px;
+            box-shadow: var(--shadow-medium);
+        }
+        
+        /* Enhanced table styling */
+        .table {
+            background: var(--gradient-dark);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .table th {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .table td {
+            border-color: var(--border-dark);
+            color: var(--text-light);
+        }
+        
+        .table tbody tr:hover {
+            background: rgba(40, 167, 69, 0.1);
+        }
+        
+        /* Password reset form styling */
+        .password-reset-form input[type="email"],
+        .password-reset-form input[type="password"] {
+            background: var(--gradient-dark);
+            border: 2px solid var(--border-dark);
+            border-radius: 12px;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            padding: 12px 16px;
+            width: 100%;
+        }
+        
+        .password-reset-form input[type="email"]:focus,
+        .password-reset-form input[type="password"]:focus {
+            background: var(--gradient-dark);
+            border-color: var(--primary-green);
+            box-shadow: var(--shadow-glow);
+            color: var(--text-light);
+        }
+        
+        .password-reset-form input[type="email"]::placeholder,
+        .password-reset-form input[type="password"]::placeholder {
+            color: var(--text-muted-dark);
+        }
+        
+        /* Ensure all form inputs in registration templates are styled */
+        .registration-form input,
+        .registration-form select,
+        .registration-form textarea {
+            background: var(--gradient-dark);
+            border: 2px solid var(--border-dark);
+            border-radius: 12px;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            padding: 12px 16px;
+        }
+        
+        .registration-form input:focus,
+        .registration-form select:focus,
+        .registration-form textarea:focus {
+            background: var(--gradient-dark);
+            border-color: var(--primary-green);
+            box-shadow: var(--shadow-glow);
+            color: var(--text-light);
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <!-- Logo and Brand -->
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <img src="{% static 'images/ecoechoes-logo.png' %}" alt="EcoEchoes Logo" height="50" class="me-2">
+                <span class="brand-text">EcoEchoes</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Left Side Navigation -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'home' %}">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'article_list' %}">
+                            <i class="fas fa-newspaper me-1"></i> Articles
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'event_list' %}">
+                            <i class="fas fa-calendar-alt me-1"></i> Events
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'about' %}">
+                            <i class="fas fa-info-circle me-1"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'contact' %}">
+                            <i class="fas fa-envelope me-1"></i> Contact
+                        </a>
+                    </li>
+                    
+                    <!-- Search Icon and Form -->
+                    <li class="nav-item">
+                        <div class="search-container">
+                            <button class="btn btn-link search-toggle" type="button" id="searchToggle">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <form class="search-form" method="GET" action="{% url 'search' %}" id="searchForm">
+                                <div class="input-group">
+                                    <input class="form-control" type="search" name="query" placeholder="Search articles & events..." id="searchInput" autocomplete="off">
+                                    <button class="btn btn-outline-light" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                <div class="search-suggestions" id="searchSuggestions"></div>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+                
+                <!-- Right Side Navigation -->
+                <ul class="navbar-nav align-items-center">
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item me-2">
+                            <a class="nav-link btn btn-outline-primary btn-sm px-3" href="{% url 'apply_membership' %}">
+                                <i class="fas fa-user-plus me-1"></i> Apply
+                            </a>
+                        </li>
+                        <li class="nav-item me-3">
+                            <a class="nav-link btn btn-outline-secondary btn-sm px-3" href="{% url 'application_status' %}">
+                                <i class="fas fa-search me-1"></i> Status
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary btn-sm px-3" href="{% url 'login' %}" title="Club Members Only">
+                                <i class="fas fa-user-shield me-1"></i> Login
+                            </a>
+                        </li>
+                    {% else %}
+                        {% if user.is_authenticated and user.is_superuser %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-shield"></i> {{ user.first_name|default:user.username }}
+                                    <span class="badge badge-eco">Admin</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/admin/">
+                                        <i class="fas fa-cog"></i> Django Admin
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                        <i class="fas fa-user-circle"></i> Profile
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{% url 'user_history' %}">
+                                        <i class="fas fa-history"></i> History
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'article_create' %}">
+                                        <i class="fas fa-plus"></i> Create Article
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{% url 'event_create' %}">
+                                        <i class="fas fa-plus"></i> Create Event
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </a></li>
+                                </ul>
+                            </li>
+                        {% elif user.is_authenticated and user.userprofile.is_club_member %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user"></i> {{ user.first_name|default:user.username }}
+                                    <span class="badge badge-eco">Member</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                        <i class="fas fa-user-circle"></i> Profile
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{% url 'user_history' %}">
+                                        <i class="fas fa-history"></i> History
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'article_create' %}">
+                                        <i class="fas fa-plus"></i> Create Article
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{% url 'event_create' %}">
+                                        <i class="fas fa-plus"></i> Create Event
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}" title="Club Members Only">
+                                    <i class="fas fa-user-shield"></i> Member Login
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Messages -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-primary mb-3 footer-logo">
+                        <img src="{% static 'images/ecoechoes-logo.png' %}" alt="EcoEchoes Logo" height="45" class="me-2">
+                        EcoEchoes
+                    </h5>
+                    <p class="mb-3">Creating a sustainable future through environmental awareness and community action.</p>
+                    <div class="social-links">
+                        <a href="#" class="me-3 text-light"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="me-3 text-light"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3 text-light"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="me-3 text-light"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5 class="text-primary mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'home' %}" class="text-light text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="{% url 'about' %}" class="text-light text-decoration-none">About</a></li>
+                        <li class="mb-2"><a href="{% url 'article_list' %}" class="text-light text-decoration-none">Articles</a></li>
+                        <li class="mb-2"><a href="{% url 'event_list' %}" class="text-light text-decoration-none">Events</a></li>
+                        <li class="mb-2"><a href="{% url 'contact' %}" class="text-light text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-primary mb-3">Categories</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'articles_by_category' 'environment' %}" class="text-light text-decoration-none">Environment</a></li>
+                        <li class="mb-2"><a href="{% url 'articles_by_category' 'renewable_energy' %}" class="text-light text-decoration-none">Renewable Energy</a></li>
+                        <li class="mb-2"><a href="{% url 'articles_by_category' 'sustainable_living' %}" class="text-light text-decoration-none">Sustainable Living</a></li>
+                        <li class="mb-2"><a href="{% url 'articles_by_category' 'climate_change' %}" class="text-light text-decoration-none">Climate Change</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-light">&copy; 2025 EcoEchoes. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0 text-light">Visit Count: <span class="badge bg-primary">{{ request.session.visit_count|default:1 }}</span></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Inline search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchToggle = document.getElementById('searchToggle');
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('searchInput');
+            
+            // Toggle search form
+            searchToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                searchForm.classList.toggle('active');
+                searchToggle.classList.toggle('hidden');
+                if (searchForm.classList.contains('active')) {
+                    searchInput.focus();
+                }
+            });
+            
+            // Close search form when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!searchToggle.contains(e.target) && !searchForm.contains(e.target)) {
+                    searchForm.classList.remove('active');
+                    searchToggle.classList.remove('hidden');
+                }
+            });
+            
+            // Close search form on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    searchForm.classList.remove('active');
+                    searchToggle.classList.remove('hidden');
+                }
+            });
+            
+            // Close search form when form is submitted
+            searchForm.addEventListener('submit', function() {
+                setTimeout(function() {
+                    searchForm.classList.remove('active');
+                    searchToggle.classList.remove('hidden');
+                }, 100);
+            });
+        });
+        
+        // Search suggestions
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const query = e.target.value;
+            const suggestions = document.getElementById('searchSuggestions');
+            
+            if (query.length >= 2) {
+                fetch('{% url "search_suggestions" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({'query': query})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    suggestions.innerHTML = '';
+                    data.suggestions.forEach(suggestion => {
+                        const div = document.createElement('div');
+                        div.className = 'search-suggestion';
+                        div.textContent = suggestion;
+                        div.addEventListener('click', function() {
+                            document.getElementById('searchInput').value = suggestion;
+                            suggestions.style.display = 'none';
+                        });
+                        suggestions.appendChild(div);
+                    });
+                    suggestions.style.display = data.suggestions.length > 0 ? 'block' : 'none';
+                });
+            } else {
+                suggestions.style.display = 'none';
+            }
+        });
+        
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-form')) {
+                document.getElementById('searchSuggestions').style.display = 'none';
+            }
+        });
+        
+        // Article like functionality
+        function likeArticle(articleId) {
+            fetch(`/ajax/like-article/${articleId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const likeBtn = document.getElementById(`like-btn-${articleId}`);
+                const likeCount = document.getElementById(`like-count-${articleId}`);
+                
+                if (data.liked) {
+                    likeBtn.innerHTML = '<i class="fas fa-heart"></i>';
+                    likeBtn.classList.add('text-danger');
+                } else {
+                    likeBtn.innerHTML = '<i class="far fa-heart"></i>';
+                    likeBtn.classList.remove('text-danger');
+                }
+                
+                likeCount.textContent = data.like_count;
+            });
+        }
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                if (alert.classList.contains('show')) {
+                    alert.classList.remove('show');
+                    setTimeout(() => alert.remove(), 500);
+                }
+            });
+        }, 5000);
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}My History{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1>My History</h1>
+            <p class="text-muted">Track your recent activity on the website</p>
+            
+            {% if history %}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Page Visited</th>
+                                        <th>Date & Time</th>
+                                        <th>IP Address</th>
+                                        <th>Device/Browser</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for visit in history %}
+                                        <tr>
+                                            <td>
+                                                <i class="fas fa-globe text-success"></i>
+                                                {{ visit.page_visited|title }}
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-clock"></i>
+                                                    {{ visit.visited_at|date:"M d, Y H:i" }}
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">{{ visit.ip_address }}</small>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">{{ visit.user_agent|truncatechars:50 }}</small>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                {% if is_paginated %}
+                    <nav aria-label="Page navigation" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">First</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+                            
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                                </span>
+                            </li>
+                            
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-history fa-4x text-muted"></i>
+                    </div>
+                    <h3 class="text-muted">No history found</h3>
+                    <p class="text-muted">Your browsing history will appear here as you navigate the website.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - {{ user.first_name }} {{ user.last_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">
+                        <i class="fas fa-user"></i> My Profile
+                    </h2>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4">
+                                <div class="profile-image-container">
+                                    {% if user.userprofile.profile_image %}
+                                        <img src="{{ user.userprofile.profile_image.url }}" 
+                                             alt="Profile Image" 
+                                             class="img-fluid rounded-circle mb-3" 
+                                             style="width: 150px; height: 150px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" 
+                                             style="width: 150px; height: 150px;">
+                                            <i class="fas fa-user text-white fa-4x"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        {{ form.profile_image.label_tag }}
+                                        {{ form.profile_image }}
+                                        {% if form.profile_image.errors %}
+                                            <div class="text-danger small">{{ form.profile_image.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                                        {{ form.first_name }}
+                                        {% if form.first_name.errors %}
+                                            <div class="text-danger small">{{ form.first_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                                        {{ form.last_name }}
+                                        {% if form.last_name.errors %}
+                                            <div class="text-danger small">{{ form.last_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="text-danger small">{{ form.email.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
+                                        {{ form.phone_number }}
+                                        {% if form.phone_number.errors %}
+                                            <div class="text-danger small">{{ form.phone_number.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.birth_date.id_for_label }}" class="form-label">Birth Date</label>
+                                        {{ form.birth_date }}
+                                        {% if form.birth_date.errors %}
+                                            <div class="text-danger small">{{ form.birth_date.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="{{ form.location.id_for_label }}" class="form-label">Location</label>
+                                    {{ form.location }}
+                                    {% if form.location.errors %}
+                                        <div class="text-danger small">{{ form.location.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="{{ form.bio.id_for_label }}" class="form-label">Bio</label>
+                                    {{ form.bio }}
+                                    {% if form.bio.errors %}
+                                        <div class="text-danger small">{{ form.bio.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Account Information</h5>
+                                <p><strong>Username:</strong> {{ user.username }}</p>
+                                <p><strong>Member Since:</strong> {{ user.userprofile.join_date|date:"F d, Y" }}</p>
+                                <p><strong>Club Member:</strong> 
+                                    {% if user.userprofile.is_club_member %}
+                                        <span class="badge bg-success">Yes</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">No</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h5>Activity Summary</h5>
+                                <p><strong>Articles Published:</strong> {{ user.article_set.count }}</p>
+                                <p><strong>Events Created:</strong> {{ user.event_set.count }}</p>
+                                <p><strong>Events Registered:</strong> {{ user.eventregistration_set.count }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'home' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Home
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-image-container {
+        position: relative;
+    }
+    
+    .form-control, .form-select {
+        background-color: var(--bs-dark);
+        border-color: var(--bs-gray-600);
+        color: var(--bs-light);
+    }
+    
+    .form-control:focus, .form-select:focus {
+        background-color: var(--bs-dark);
+        border-color: var(--bs-primary);
+        color: var(--bs-light);
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+    
+    .form-label {
+        color: var(--bs-light);
+        font-weight: 500;
+    }
+    
+    .card {
+        background-color: var(--bs-dark);
+        border-color: var(--bs-gray-600);
+    }
+    
+    .card-header {
+        background-color: var(--bs-primary) !important;
+    }
+</style>
+{% endblock %} 

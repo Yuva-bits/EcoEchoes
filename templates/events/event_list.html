@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Events{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Events</h1>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'event_create' %}" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Add Event
+                    </a>
+                {% endif %}
+            </div>
+            
+            {% if events %}
+                <div class="row">
+                    {% for event in events %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100">
+                                {% if event.image %}
+                                    <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}" style="height: 200px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">{{ event.title }}</h5>
+                                    <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-calendar"></i> {{ event.start_date|date:"M d, Y" }}
+                                            {% if event.end_date and event.end_date != event.start_date %}
+                                                - {{ event.end_date|date:"M d, Y" }}
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-map-marker-alt"></i> {{ event.location }}
+                                        </small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-users"></i> 
+                                            {% if event.capacity %}
+                                                {{ event.registrations.count }}/{{ event.capacity }}
+                                            {% else %}
+                                                {{ event.registrations.count }} registered
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'event_detail' event.slug %}" class="btn btn-outline-light btn-sm">View Details</a>
+                                        {% if user.is_authenticated and user.userprofile.is_club_member %}
+                                            <a href="{% url 'event_update' event.slug %}" class="btn btn-outline-warning btn-sm">Edit</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if is_paginated %}
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">First</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+                            
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                                </span>
+                            </li>
+                            
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-calendar-times fa-4x text-muted"></i>
+                    </div>
+                    <h3 class="text-muted">No events found</h3>
+                    <p class="text-muted">There are no events available at the moment.</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'event_create' %}" class="btn btn-success">Create First Event</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

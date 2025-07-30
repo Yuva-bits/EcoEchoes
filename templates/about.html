@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block title %}About - EcoEchoes{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1><i class="fas fa-leaf"></i> About EcoEchoes</h1>
+                <p class="lead">Building a sustainable future through education, community action, and environmental advocacy</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Mission Section -->
+            <div class="card mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0"><i class="fas fa-bullseye"></i> Our Mission</h2>
+                </div>
+                <div class="card-body">
+                    <p class="lead mb-3">
+                        At EcoEchoes, we're more than just a club—we're a movement. Our mission is to build a sustainable future by empowering individuals through education, community action, and environmental advocacy.
+                    </p>
+                    <p class="mb-0">
+                        We believe that every person has the potential to spark change, and when we act together, our impact echoes far beyond ourselves.
+                    </p>
+                </div>
+            </div>
+
+            <!-- What We Do Section -->
+            <div class="card mb-5">
+                <div class="card-header bg-success text-white">
+                    <h2 class="mb-0"><i class="fas fa-tasks"></i> What We Do</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-book text-primary"></i>
+                                </div>
+                                <h5 class="text-primary">Educational Content</h5>
+                                <p>We share insightful, easy-to-understand articles on environmental issues, sustainable living, and eco-friendly habits to inform and inspire conscious choices.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-seedling text-success"></i>
+                                </div>
+                                <h5 class="text-success">Community Events</h5>
+                                <p>From tree-planting drives to clean-up campaigns, we organize hands-on events that bring people together to restore and protect our environment.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-microphone text-info"></i>
+                                </div>
+                                <h5 class="text-info">Public Speaking & Workshops</h5>
+                                <p>We host talks, seminars, and interactive workshops to spread awareness and educate communities on climate action and conservation strategies.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-trophy text-warning"></i>
+                                </div>
+                                <h5 class="text-warning">Eco Competitions</h5>
+                                <p>Innovation meets impact in our sustainability-focused competitions that challenge participants to think creatively about real-world environmental solutions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Section -->
+            <div class="card mb-5">
+                <div class="card-header bg-info text-white">
+                </div>
+                <div class="card-body">
+                    <p class="lead mb-3">
+                        EcoEchoes is open to everyone—students, professionals, and everyday eco-warriors—united by a shared commitment to the planet.
+                    </p>
+                    <p class="mb-3">
+                        Whether you're looking to learn, volunteer, or lead, you'll find opportunities to grow and make a difference. Our members write educational content, coordinate local initiatives, and inspire others to take action.
+                    </p>
+                    <div class="alert alert-primary">
+                        <h5 class="mb-2"><i class="fas fa-star"></i> Want to do more than just follow along?</h5>
+                        <p class="mb-0">Reach out to us to learn how you can become an active member and help shape a greener tomorrow.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="text-center">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="{% url 'apply_membership' %}" class="btn btn-success btn-lg mb-3 w-100">
+                            <i class="fas fa-user-plus"></i> Apply for Membership
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'contact' %}" class="btn btn-primary btn-lg mb-3 w-100">
+                            <i class="fas fa-envelope"></i> Contact Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .feature-card {
+        padding: 1.5rem;
+        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(23, 162, 184, 0.1));
+        border: 1px solid rgba(40, 167, 69, 0.2);
+        height: 100%;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .feature-card h5 {
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .feature-card p {
+        color: var(--text-light);
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+    
+    .card {
+        background-color: var(--bs-dark);
+        border-color: var(--bs-gray-600);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-header {
+        border-bottom-color: var(--bs-gray-600);
+    }
+    
+    .alert {
+        background-color: rgba(40, 167, 69, 0.1);
+        border-color: rgba(40, 167, 69, 0.3);
+        color: var(--text-light);
+    }
+    
+    .btn {
+        transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload File{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Upload File</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-danger">{{ form.title.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="text-danger">{{ form.description.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.file.id_for_label }}" class="form-label">File</label>
+                            {{ form.file }}
+                            {% if form.file.errors %}
+                                <div class="text-danger">{{ form.file.errors }}</div>
+                            {% endif %}
+                            <div class="form-text">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle"></i>
+                                    Supported formats: PDF, DOC, DOCX, Images (JPG, PNG, GIF). Max size: 10MB
+                                </small>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.file_type.id_for_label }}" class="form-label">File Type</label>
+                            {{ form.file_type }}
+                            {% if form.file_type.errors %}
+                                <div class="text-danger">{{ form.file_type.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'profile' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-upload"></i> Upload File
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Display uploaded files -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3>My Uploaded Files</h3>
+                </div>
+                <div class="card-body">
+                    {% if user_files %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Type</th>
+                                        <th>Uploaded</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for file in user_files %}
+                                        <tr>
+                                            <td>
+                                                <i class="fas fa-file text-success"></i>
+                                                {{ file.title }}
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-secondary">{{ file.get_file_type_display }}</span>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">{{ file.uploaded_at|date:"M d, Y H:i" }}</small>
+                                            </td>
+                                            <td>
+                                                <a href="{{ file.file.url }}" class="btn btn-sm btn-outline-light" target="_blank">
+                                                    <i class="fas fa-download"></i> Download
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No files uploaded yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
